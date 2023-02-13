@@ -993,7 +993,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                             devPar.setVisibility(View.GONE);
                             logoMini.setVisibility(View.GONE);
 
-                            ptiSwitch.setTextOn(nomInterrupteur);
+                            ptiSwitch.setTextOff(nomInterrupteur);
                             ptiSwitch.setTextColor(couleurR);
 
                             if (ptiEtat) {
