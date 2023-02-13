@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="3dp">
+
+    <TextView
+        android:id="@+id/tv_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="15dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceListItem"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:id="@+id/champ1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+
+        <com.ateliopti.lapplicationpti.hbb20.CountryCodePicker
+            android:id="@+id/contact1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+
+            android:scrollbarSize="12sp"
+            app:ccpDialog_allowSearch="false"
+            app:ccp_arrowSize="12sp"
+            app:ccp_customMasterCountries="FR,BE,CH,LU,MC,MQ,GF,RE,YT,PM,BL,MF,WF,PF,NC,ATF,GP"
+            app:ccp_defaultLanguage="FRENCH"
+            app:ccp_defaultNameCode="FR"
+            app:ccp_showNameCode="false"
+            app:ccp_textSize="22sp" />
+
+        <EditText
+            android:id="@+id/contact_numero1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numéro de téléphone GSM"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

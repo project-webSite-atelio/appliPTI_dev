@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="intent_actions">
+        <item>position_find</item>
+        <item>start_gps_loop</item>
+        <item>declenchement_envers</item>
+        <item>alarme_absence_mouvement</item>
+        <item>alarme_perte_verticalite</item>
+        <item>fin_compteur_homme_mort</item>
+        <item>ping</item>
+        <item>fin_pti</item>
+        <item>alarme_bluetooth</item>
+        <item>actualiserIzsrBouton</item>
+        <item>activation</item>
+        <item>finCompteurIZSR</item>
+        <item>gps_permission</item>
+        <item>prealarme_annulation_par_mouvement</item>
+        <item>seLocaliserGpsFind</item>
+        <item>GPS_ALERT</item>
+        <item>MODE_JOUR</item>
+        <item>MODE_NUIT</item>
+
+    </string-array>
+</resources>

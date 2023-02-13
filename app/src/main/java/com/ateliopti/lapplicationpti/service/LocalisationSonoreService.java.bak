@@ -1,0 +1,219 @@
+package com.ateliopti.lapplicationpti.service;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.PowerManager;
+
+import com.ateliopti.lapplicationpti.MainActivity;
+import com.ateliopti.lapplicationpti.R;
+
+import java.io.IOException;
+
+public class LocalisationSonoreService extends Service {
+    private static final MediaPlayer mp = new MediaPlayer();
+    private static CountDownTimer timerLocalisationSonore;
+    private Context context;
+
+    PowerManager.WakeLock wakeLock;
+
+    NotificationManager notificationManager;
+    NotificationChannel channel;
+
+    Handler handlerLocalisationSonore;
+    Runnable runnableLocalisationSonore;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+        launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, launchNotificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name),
+                    NotificationManager.IMPORTANCE_MIN);
+
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_id))
+                    .setOngoing(true) // impossible d'enlever
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(getString(R.string.notification_titre))
+                    .setContentText(getString(R.string.notification_texte))
+                    .setSmallIcon(R.drawable.pti_notification)
+                    .build();
+
+
+            startForeground(1, notification);
+
+
+            System.out.println("@atelio " + " ONCREATE LocalisationSonoreService");
+
+
+        }
+
+
+    }
+
+    public LocalisationSonoreService() {
+
+    }
+
+    @SuppressLint("WakelockTimeout")
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        context = getBaseContext();
+
+        if (wakeLock != null) {
+            if (!wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
+        }
+
+        jouerLocalisationSonore();
+        return Service.START_STICKY;
+    }
+
+    private void jouerLocalisationSonore() {
+
+
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        am.setStreamVolume(AudioManager.STREAM_ALARM, 100, 0);
+
+        Resources res = context.getResources();
+        int soundId = res.getIdentifier("localisation_sonore", "raw", context.getPackageName());
+        AssetFileDescriptor afd = res.openRawResourceFd(soundId);
+
+
+        mp.reset();
+        //       mp.setAudioStreamType(AudioManager.STREAM_ALARM); // hauts-parleurs
+
+        mp.setAudioStreamType(AudioManager.STREAM_ALARM); // hauts-parleurs
+
+
+        try {
+            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mp.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mp.start();
+
+
+        mp.setOnCompletionListener(mp -> {
+            if (timerLocalisationSonore != null) {
+                timerLocalisationSonore.cancel();
+            }
+
+            delaiPause();
+        });
+    }
+
+    // Compteur
+    @SuppressLint("WakelockTimeout")
+    public void delaiPause() {
+        if (wakeLock != null) {
+            if (!wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
+        }
+
+        int tempsPause = 30; // 30
+
+        timerLocalisationSonore = new CountDownTimer(tempsPause * 1000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                System.out.println("Pause localisation sonore : " + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                handlerLocalisationSonore = new Handler(Looper.getMainLooper());
+                handlerLocalisationSonore.post(runnableLocalisationSonore = () -> jouerLocalisationSonore());
+            }
+        };
+        timerLocalisationSonore.start();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void onDestroy() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
+
+
+        try {
+            handlerLocalisationSonore.removeCallbacks(runnableLocalisationSonore);
+        } catch (Exception ignored) {
+
+        }
+
+        try {
+            timerLocalisationSonore.cancel();
+
+            timerLocalisationSonore = null;
+
+        } catch (Exception ignored) {
+
+        }
+
+        super.onDestroy();
+        try {
+            mp.stop();
+        } catch (Exception ignored) {
+
+        }
+
+        if (wakeLock != null) {
+            if (wakeLock.isHeld()) {
+                wakeLock.release();
+                wakeLock = null;
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        } else {
+            stopSelf();
+        }
+
+    }
+
+
+}

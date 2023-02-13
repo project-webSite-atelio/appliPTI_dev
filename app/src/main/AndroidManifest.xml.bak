@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ateliopti.lapplicationpti">
+
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+
+
+
+    <application
+        android:allowBackup="true"
+        android:name="com.ateliopti.lapplicationpti.ApplicationPti"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+
+        android:usesCleartextTraffic="true">
+
+        <service
+            android:name=".service.PrealarmeService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.PingSonoreService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.ShutDownService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.DeclenchementBluetoothService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.IZSRService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <receiver
+            android:name=".receiver.ShutDownReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".service.AlwaysOnService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":appli_pti"
+            android:stopWithTask="false" />
+
+        <receiver
+            android:name=".receiver.BootUpReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.RappelUtilisationReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.RAPPEL_UTILISATION_RECEIVER" />
+                <action android:name="android.intent.action.RAPPEL_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.ButtonReceiver"
+            android:exported="false">
+        </receiver>
+        <receiver
+            android:name=".receiver.ForegroundReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_USER_FOREGROUND" />
+                <action android:name="android.intent.action.ACTION_USER_BACKGROUND" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.ChargerReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.ScreenReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.TimeChangedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.PingService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <service
+            android:name=".service.LocalisationSonoreService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.HommeMortService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.AnnulationParMouvementService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.PerteVerticaliteService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.AbsenceMouvementService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.RedemarrageService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":appli_pti"
+            android:stopWithTask="false" />
+        <service
+            android:name=".service.DeclenchementEnversService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.RechercheGPSLoopService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+        <service
+            android:name=".service.RecherchePositionService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <service
+            android:name=".service.GPSTracker"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <service
+            android:name=".service.ChargeService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="true" />
+
+        <receiver
+            android:name=".receiver.PTIOffReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission=""
+            tools:ignore="ExportedReceiver" />
+        <receiver
+            android:name=".receiver.NotationNonReceiver"
+            android:enabled="true"
+            android:exported="false" />
+        <receiver
+            android:name=".receiver.NotationOuiReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receiver.GpsListener"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver android:name=".receiver.PowerReceiver"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter android:priority="90000">
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

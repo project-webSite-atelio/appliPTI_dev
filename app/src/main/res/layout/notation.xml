@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:id="@+id/notification_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+
+        <TextView style="@style/TextAppearance.Compat.Notification.Title"
+            android:id="@+id/content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notation"
+
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/content_button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ne_plus_me_demander"
+                android:layout_weight="1"
+                android:textAllCaps="true"
+                android:layout_alignParentLeft="true"
+            />
+
+            <Button
+                android:id="@+id/content_button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/oui"
+                android:textAllCaps="true"
+                android:layout_alignParentRight="true" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

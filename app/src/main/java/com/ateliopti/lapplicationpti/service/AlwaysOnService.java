@@ -1,0 +1,349 @@
+package com.ateliopti.lapplicationpti.service;
+
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+
+
+import androidx.annotation.Nullable;
+
+import com.ateliopti.lapplicationpti.AsyncDesactivationJob;
+import com.ateliopti.lapplicationpti.MainActivity;
+import com.ateliopti.lapplicationpti.R;
+import com.ateliopti.lapplicationpti.manager.EtatManager;
+import com.ateliopti.lapplicationpti.manager.OptionsManager;
+import com.ateliopti.lapplicationpti.receiver.ChargerReceiver;
+import com.ateliopti.lapplicationpti.receiver.ScreenReceiver;
+
+import java.util.Timer;
+
+
+public class AlwaysOnService extends Service {
+
+    NotificationManager notificationManager;
+    NotificationChannel channel;
+    AsyncDesactivationJob asyncDesactivationJob;
+
+    EtatManager etatManager;
+    OptionsManager optionsManager;
+
+
+
+    private ChargerReceiver chargerReceiver;
+    private ScreenReceiver foregroundReceiver;
+
+    private static final int TIMER_RATE = 30 * 1000;
+    private static final int TIMER_DELAY = 0;
+    private Timer timer;
+
+   // public static boolean serviceRunning = false;
+
+    public void onCreate() {
+        super.onCreate();
+
+        channel = null;
+
+        cacherIcone();
+
+
+        if (chargerReceiver == null) {
+            chargerReceiver = new ChargerReceiver();
+            IntentFilter chargerFilter = new IntentFilter();
+            chargerFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+            chargerFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            registerReceiver(chargerReceiver, chargerFilter);
+        }
+
+        IntentFilter foregroundFilter = new IntentFilter();
+        foregroundFilter.addAction(Intent.ACTION_USER_PRESENT);
+        foregroundFilter.addAction(Intent.ACTION_SCREEN_ON);
+        foregroundFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        foregroundFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+
+
+        if (foregroundReceiver == null) {
+            foregroundReceiver = new ScreenReceiver();
+            registerReceiver(foregroundReceiver, foregroundFilter);
+        }
+
+    }
+
+    public void afficherIcone() {
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                channel = new NotificationChannel(getString(R.string.channel_eye_id), getString(R.string.channel_eye_name),
+                        NotificationManager.IMPORTANCE_MIN);
+
+                channel.setSound(null, null);
+
+            //    channel.setVibrationPattern(new long[]{0});
+           //     channel.enableVibration(true);
+
+
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(channel);
+
+
+
+                final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+                launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                        0, launchNotificationIntent,
+                        PendingIntent.FLAG_IMMUTABLE);
+
+
+                String notifTexte = "Appuyez pour ouvrir l'application PTI";
+
+                String notifTitle = "Alarmes inactives …";
+
+                Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_eye_id))
+                        //     .setOngoing(true) // impossible d'enlever
+                        .setContentIntent(pendingIntent)
+                        .setSmallIcon(R.drawable.surveillance_notification)
+                        .setContentTitle(notifTitle)
+                        .setContentText(notifTexte)
+
+                        .build();
+
+
+                startForeground(2, notification);
+
+                System.out.println("@atelio ONCREATE ALWAYSONSERVICE");
+
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    public void cacherIcone() {
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name),
+                        NotificationManager.IMPORTANCE_MIN);
+
+                channel.setVibrationPattern(new long[]{0});
+                channel.enableVibration(true);
+                channel.setSound(null, null);
+
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(channel);
+
+
+                final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+
+                launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                        0, launchNotificationIntent,
+                        PendingIntent.FLAG_IMMUTABLE);
+
+                Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_id))
+                        .setOngoing(true) // impossible d'enlever
+                        .setContentIntent(pendingIntent)
+                        .setContentTitle(getString(R.string.notification_titre))
+                        .setContentText(getString(R.string.notification_texte))
+                        .setSmallIcon(R.drawable.pti_notification)
+                        .build();
+
+
+                startForeground(1, notification);
+
+
+                System.out.println("@atelio " + " ONCREATE ALWAYSONSERVICE");
+
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        etatManager = new EtatManager(getApplicationContext());
+        optionsManager = new OptionsManager(getApplicationContext());
+
+       // serviceRunning = true;
+
+        try {
+            if (intent.getAction() != null) {
+
+                startTimer();
+
+                if (intent.getAction().equals("AFFICHER")) {
+                    afficherIcone();
+                } else {
+                    cacherIcone();
+                }
+            }
+        } catch (Exception e) {
+
+        }
+        System.out.println("@atelio " + " ONSTARTCOMMAND ALWAYSONSERVICE");
+
+        return Service.START_STICKY;
+    }
+
+    // Démarre le timer
+    private void startTimer() {
+        cancelTimer();
+        scheduleTimer();
+    }
+
+    //
+    private void scheduleTimer() {
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("TEST ALARME PLAYED");
+                task();
+            }
+        });
+
+    }
+
+    private void cancelTimer() {
+        if (timer != null)
+            timer.cancel();
+    }
+
+    private void task() {
+
+        etatManager.open();
+        optionsManager.open();
+
+        boolean activationAutomatique = false;
+        boolean sollicitation = false;
+        try {
+            System.out.println("@atelio " + optionsManager.getOptions().isActivationPTIAutomatique());
+            activationAutomatique = optionsManager.getOptions().isActivationPTIAutomatique();
+        } catch (Exception ignored) {
+            activationAutomatique = false;
+        }
+
+        try {
+            System.out.println("@atelio " + optionsManager.getOptions().isSollicitation());
+            sollicitation = optionsManager.getOptions().isSollicitation();
+        } catch (Exception ignored) {
+            sollicitation = false;
+        }
+
+
+        final Handler handler = new Handler();
+        final boolean finalActivationAutomatique = activationAutomatique;
+        final boolean finalSollicitation = sollicitation;
+        Runnable runnable = new Runnable() {
+
+            @Override
+            public void run() {
+                try{
+
+                    etatManager.open();
+                    if(!etatManager.getEtat().getDerniereDesactivation().equals("")){
+
+
+                        asyncDesactivationJob = new AsyncDesactivationJob(AlwaysOnService.this);
+                        asyncDesactivationJob.run();
+
+                    }else{
+                        optionsManager.open();
+                        System.out.println("@atelio " + " STOP ALWAYSONSERVICE");
+                        if(!finalSollicitation && !finalActivationAutomatique){
+                           // stopSelf();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                stopForeground(true);
+                            } else {
+
+                                    stopSelf();
+
+                            }
+                        }
+
+                    }
+
+
+
+                }
+                catch (Exception e) {
+                    // TODO: handle exception
+                }
+                finally{
+                    //also call the same runnable to call it at regular interval
+                    handler.postDelayed(this, 10000);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 10000);
+
+
+
+    }
+
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+
+    @Override
+    public void onDestroy() {
+
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            stopForeground(true);
+
+            if (notificationManager != null && channel != null) { //If this is the only notification on your channel
+
+                try{
+                    notificationManager.deleteNotificationChannel(channel.getId()); // TODO : bug
+                }catch (Exception ignored){
+
+                }
+
+
+            }
+            System.out.println("@atelio " + " DESTROY ALWAYSONSERVICE");
+
+        }
+
+        super.onDestroy();
+
+        try {
+            unregisterReceiver(chargerReceiver);
+        } catch (Exception ignored) {
+
+        }
+
+        try {
+            unregisterReceiver(foregroundReceiver);
+        } catch (Exception ignored) {
+
+        }
+
+    }
+}

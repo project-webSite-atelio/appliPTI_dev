@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="test">#221224</color>
+    <color name="defaultContentColor">@android:color/black</color>
+    <color name="defaultBorderFlagColor">@android:color/transparent</color>
+    <color name="pressed_bg">#64b7b7b7</color>
+
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#41193F</color>
+    <color name="couleurNoir">#000000</color>
+    <color name="couleurBlanc">#FFFFFF</color>
+    <color name="couleurRouge">#FF0000</color>
+    <color name="couleurVert">#00C40B</color>
+
+    <!-- Thèmes logo -->
+    <color name="colorAtelio">#80387D</color>
+
+    <color name="colorOfficeEasy">#186A8F</color>
+
+    <color name="colorAstre">#235F9B</color>
+
+    <color name="colorSaasse">#020202</color>
+
+    <color name="colorSeris">#09458D</color>
+
+    <color name="colorSerisLive">#004A94</color>
+
+    <color name="colorPepperlFuchs">#00A486</color>
+
+    <color name="colorOnet">#03366E</color>
+
+    <color name="colorProsegur">#F8D219</color>
+
+    <color name="colorNexecur">#F7A701</color>
+
+    <color name="colorCofely">#00B0F4</color>
+
+    <color name="colorOnedirect">#231F20</color>
+
+    <color name="colorMyAngel">#007FC7</color>
+
+    <color name="colorScoreMb">#384A59</color>
+
+    <color name="colorGrey">#e6e3e3</color>
+
+
+
+</resources>

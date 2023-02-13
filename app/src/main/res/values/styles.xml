@@ -1,0 +1,118 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="ThemeAtelio">
+        <item name="colorPrimary">@color/colorAtelio</item>
+        <item name="colorPrimaryDark">@color/colorAtelio</item>
+        <item name="colorAccent">@color/colorAtelio</item>
+    </style>
+
+    <style name="ThemeOfficeEasy">
+        <item name="colorPrimary">@color/colorOfficeEasy</item>
+        <item name="colorPrimaryDark">@color/colorOfficeEasy</item>
+        <item name="colorAccent">@color/colorOfficeEasy</item>
+    </style>
+
+    <style name="ThemeAstre">
+        <item name="colorPrimary">@color/colorAstre</item>
+        <item name="colorPrimaryDark">@color/colorAstre</item>
+        <item name="colorAccent">@color/colorAstre</item>
+    </style>
+
+    <style name="ThemeSaasse">
+        <item name="colorPrimary">@color/colorSaasse</item>
+        <item name="colorPrimaryDark">@color/colorSaasse</item>
+        <item name="colorAccent">@color/colorSaasse</item>
+    </style>
+
+    <style name="ThemeSeris">
+        <item name="colorPrimary">@color/colorSeris</item>
+        <item name="colorPrimaryDark">@color/colorSeris</item>
+        <item name="colorAccent">@color/colorSeris</item>
+    </style>
+
+    <style name="ThemeSerisLive">
+        <item name="colorPrimary">@color/colorSerisLive</item>
+        <item name="colorPrimaryDark">@color/colorSerisLive</item>
+        <item name="colorAccent">@color/colorSerisLive</item>
+    </style>
+
+    <style name="ThemePepperlFuchs">
+        <item name="colorPrimary">@color/colorPepperlFuchs</item>
+        <item name="colorPrimaryDark">@color/colorPepperlFuchs</item>
+        <item name="colorAccent">@color/colorPepperlFuchs</item>
+    </style>
+
+    <style name="ThemeOnet">
+        <item name="colorPrimary">@color/colorOnet</item>
+        <item name="colorPrimaryDark">@color/colorOnet</item>
+        <item name="colorAccent">@color/colorOnet</item>
+    </style>
+
+    <style name="ThemeProsegur">
+        <item name="colorPrimary">@color/colorProsegur</item>
+        <item name="colorPrimaryDark">@color/colorProsegur</item>
+        <item name="colorAccent">@color/colorProsegur</item>
+    </style>
+
+    <style name="ThemeNexecur">
+        <item name="colorPrimary">@color/colorNexecur</item>
+        <item name="colorPrimaryDark">@color/colorNexecur</item>
+        <item name="colorAccent">@color/colorNexecur</item>
+    </style>
+
+    <style name="ThemeCofely">
+        <item name="colorPrimary">@color/colorCofely</item>
+        <item name="colorPrimaryDark">@color/colorCofely</item>
+        <item name="colorAccent">@color/colorCofely</item>
+    </style>
+
+    <style name="ThemeOneDirect">
+        <item name="colorPrimary">@color/colorOnedirect</item>
+        <item name="colorPrimaryDark">@color/colorOnedirect</item>
+        <item name="colorAccent">@color/colorOnedirect</item>
+    </style>
+
+    <style name="ThemeMyAngel">
+        <item name="colorPrimary">@color/colorMyAngel</item>
+        <item name="colorPrimaryDark">@color/colorMyAngel</item>
+        <item name="colorAccent">@color/colorMyAngel</item>
+    </style>
+
+    <style name="ThemeScoreMb">
+        <item name="colorPrimary">@color/colorScoreMb</item>
+        <item name="colorPrimaryDark">@color/colorScoreMb</item>
+        <item name="colorAccent">@color/colorScoreMb</item>
+    </style>
+
+
+    <style name="SwitchThemeOverlay" parent="">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#00c853</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#CC0000</item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#CCCCCC
+        </item>
+    </style>
+
+    <style name="MaterialAlertDialog.Rounded" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialAlertDialog.Rounded</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Rounded" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+
+</resources>

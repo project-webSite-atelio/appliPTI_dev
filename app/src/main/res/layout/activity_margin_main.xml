@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/couleurNoir"
+    android:keepScreenOn="true"
+    android:paddingTop="25dp"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+
+
+
+
+    tools:context=".MainActivity"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+        <TextView
+            android:id="@+id/imeiInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="PTI"
+            android:textAlignment="center"
+
+            android:textColor="#FFF"
+            android:background="@color/colorAtelio" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:gravity="left|center_vertical"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:id="@+id/etatVersion"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:textColor="@color/couleurBlanc" />
+
+
+
+                        </LinearLayout>
+
+
+
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/ptiSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:text="PTI"
+                            android:textSize="22sp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textColor="#FFF"
+                            android:theme="@style/SwitchThemeOverlay"
+
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+
+            android:id="@+id/indication"
+            android:text="Voir la localisation"
+            android:textSize="32sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:visibility="invisible"
+            android:textColor="@color/couleurBlanc" />
+
+        <ScrollView
+
+
+            android:id="@+id/scrollView"
+
+            android:layout_width="match_parent"
+
+            android:paddingBottom="50dp"
+
+            android:layout_height="wrap_content"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            app:layout_constraintRight_toRightOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/buttonSOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@color/couleurRouge"
+                    android:text="APPUYEZ LONGUEMENT\nPOUR DECLENCHER L'ALARME VOLONTAIRE"
+                    android:textColor="@color/couleurBlanc"
+                    app:layout_constraintBottom_toBottomOf="@+id/logo" />
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+
+                    android:background="@color/couleurBlanc"
+                    android:src="@drawable/logo_atelio"
+                    android:adjustViewBounds="true"
+
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/modeScenarioJourNuit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+
+                    android:gravity="left"
+                    android:maxLines="10"
+                    android:minLines="1"
+                    android:textSize="44sp"
+                    android:text="Mode Jour"
+                    android:textColor="@color/couleurBlanc"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/ptiSwitch"
+                    app:layout_constraintTop_toTopOf="@+id/localisationText" />
+
+
+                <TextView
+                    android:id="@+id/localisationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+
+                    android:gravity="left"
+                    android:maxLines="10"
+                    android:minLines="1"
+                    android:textSize="22sp"
+                    android:text="Localisation"
+                    android:textColor="@color/couleurBlanc"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/ptiSwitch"
+                    app:layout_constraintTop_toTopOf="@+id/localisationText2" />
+
+
+                <TextView
+                    android:id="@+id/localisationText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+
+                    android:textSize="22sp"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:maxLines="3"
+                    android:minLines="3"
+                    android:textColor="@color/couleurBlanc"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/localisationText"
+
+
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/buttonSOS" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:gravity="bottom|center"
+
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/declarer"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:text="Assistance\ntechnique"
+
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+
+        android:layout_weight="1"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/blocTutoriel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:textStyle="bold"
+            android:text="Pour activer/désactiver la surveillance PTI, appuyez sur le curseur rouge"
+            android:textAlignment="center"
+
+            android:textColor="#FFF"
+            android:background="@color/colorAtelio" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

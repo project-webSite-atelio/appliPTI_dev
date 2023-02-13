@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_type">prod</string>
+
+    <string name="app_version">40</string>
+
+    <string name="server_url">130.93.60.163</string>
+    <string name="server_url_dev">185.9.248.218</string>
+
+    <string name="prod_full_url">https://tlg-pti.fr/</string>
+    <string name="dev_full_url">http://185.9.248.218:8080/</string>
+
+    <string name="server_port"></string>
+    <string name="server_port2">:8080</string>
+
+    <string name="app_name">L\'application PTI</string>
+    <string name="title_activity_settings">L\'application PTI</string>
+
+    <string name="channel_id">11111</string>
+    <string name="channel_name">AppliPTIService</string>
+    <string name="channel_content_title">L\'application PTI</string>
+
+    <string name="channel_eye_id">11112</string>
+    <string name="channel_eye_name">SurveillancePTIService</string>
+    <string name="channel_eye_content_title">L\'application PTI</string>
+    <string name="channel_eye_content_message">En veille …</string>
+
+    <string name="notification_titre">Surveillance PTI en cours …</string>
+    <string name="notification_texte">Appuyez pour ouvrir l\'application PTI</string>
+
+    <string name="gps_alert">GOOGLE / ANDROID imposera prochainement aux développeurs une nouvelle restriction.\n\nAfin de protéger la vie privée, une application pourra obtenir la localisation GPS de l’utilisateur uniquement lorsqu’elle est utilisée en plein écran.\nL’application PTI est mise en conformité dès aujourd’hui.</string>
+    <string name="gps_alert_en_savoir_plus">Pour un fonctionnement optimal de la surveillance PTI \"En extérieur\", exploitant la localisation GPS, l’utilisateur doit :\n- afficher l’application PTI en plein écran à l’arrivée sur le lieu de travail isolé\n- vérifier l’adresse captée après quelques secondes\n\nPour rappel, il existe la surveillance PTI « En intérieur », qui à la place d’exploiter la localisation GPS, permet à l’utilisateur d’enregistrer en quelques secondes une localisation vocale (un message vocal contenant l’adresse, l’étage, la salle ou encore toute autre information qu’il juge pertinente de communiquer en cas d’alarme). Utilisée à bon escient, la localisation vocale peut s’avérer bien plus précise que la localisation GPS.</string>
+
+    <string name="alert_dialog_size">12</string>
+
+
+    <string name="notation">Vous aimez l\'application PTI ?</string>
+    <string name="oui">Oui</string>
+    <string name="ne_plus_me_demander">Ne plus me demander</string>
+
+    <string name="search_hint">Search…</string>
+    <string name="no_result_found">Results not found</string>
+    <string name="select_country">Select a country</string>
+    <string name="dismiss_button_content_description">Dismiss</string>
+    <string name="clear_search_button_content_description">Clear search</string>
+
+
+    <string name="texte_mode_nuit"> ⚠️ Mode Nuit 🌙</string>
+    <string name="texte_mode_jour"> ⚠️ Mode Jour ☀</string>
+
+
+</resources>

@@ -1,0 +1,299 @@
+package com.ateliopti.lapplicationpti.service;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.PowerManager;
+import android.os.Vibrator;
+
+import android.view.Display;
+import android.view.WindowManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.ateliopti.lapplicationpti.MainActivity;
+import com.ateliopti.lapplicationpti.R;
+
+public class AnnulationParMouvementService extends Service implements SensorEventListener {
+
+    private static final String DUREE_NOTIF = "duree_notif";
+
+    private static CountDownTimer timerAnnule; // Timer
+    private static CountDownTimer verif3SecondesAnnule;
+
+    private boolean verifBouge = false; // Vérification si le téléphone a bougé pendant tant secondes
+
+    Vibrator vibrator;
+    SensorManager sensorManager = null;
+    Sensor accelerometre;
+
+    PowerManager powerManager;
+    PowerManager.WakeLock wakeLock;
+
+    // Utilisation de l'accéléromètre
+    private static final double BASE_MOVEMENT_SENSITIVITY = 0.1; //0.1 par défaut
+    private double lastAcceleration = 0;
+    private double movementSensitivity;
+    float x, y, z;
+    Display mDisplay;
+
+    // Oreo
+    NotificationManager notificationManager;
+    NotificationChannel channel;
+
+    /*
+     * onCreate
+     */
+
+
+    public void onCreate() {
+        super.onCreate();
+
+        final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+
+        launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, launchNotificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name),
+                    NotificationManager.IMPORTANCE_MIN);
+
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_id))
+                    .setOngoing(true) // impossible d'enlever
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(getString(R.string.notification_titre))
+                    .setContentText(getString(R.string.notification_texte))
+                    .setSmallIcon(R.drawable.pti_notification)
+                    .build();
+
+
+            startForeground(1, notification);
+
+
+            System.out.println("@atelio " + " ONCREATE AnnulationParMouvementService");
+
+
+        }
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mDisplay = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "s:TempWakeLock");
+
+
+        // Nécessaire pour que le sensor soit utilisé dans le service
+        sensorManager.registerListener(this, accelerometre, SensorManager.SENSOR_DELAY_NORMAL);
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        sensorManager.unregisterListener(this, accelerometre);
+        sensorManager = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            stopForeground(true);
+            if (notificationManager != null) { //If this is the only notification on your channel
+
+                //   notificationManager.deleteNotificationChannel(channel.getId());
+            }
+
+        }
+
+        try {
+            timerAnnule.cancel();
+            timerAnnule = null;
+        } catch (Exception ignored) {
+
+        }
+
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+        int baseMovementSensitivityPercents = 750;         // 100% = BASE_MOVEMENT_SENSITIVITY
+        movementSensitivity = BASE_MOVEMENT_SENSITIVITY * (double) baseMovementSensitivityPercents / 100.0;
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mDisplay = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        //    System.out.println("Durée de notification reçu par le service = " + intent.getExtras().get(DUREE_NOTIF));
+
+
+        //   baseTemps = Integer.parseInt(intent.getExtras().get(DUREE_NOTIF).toString()); // BUG
+
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+        compteurMouvement();
+
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Rien à faire
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (timerAnnule != null) {
+
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                x = event.values[0]; // Azimut
+                y = event.values[1]; // Pitch
+                z = event.values[2]; // Roll
+                double acceleration = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+                double change = Math.abs(acceleration - lastAcceleration);
+
+                // S'il n'y a plus de mouvements, on démarre le timer
+                if (change > movementSensitivity) {
+
+                    verif3Secondes();
+                    verifBouge = true;
+                    lastAcceleration = acceleration;
+                } else {
+                    if (verif3SecondesAnnule != null) {
+                        verif3SecondesAnnule.cancel();
+                    }
+                    verifBouge = false;
+                }
+            }
+
+        }
+    }
+
+    public void verif3Secondes() {
+        verif3SecondesAnnule = new CountDownTimer(2000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (verifBouge && timerAnnule != null) {
+                            timerAnnule.cancel();
+                            timerAnnule.start();
+                            System.out.println("Smart S a détecté un mouvement");
+                            annulationPrealarme();
+
+                            //  Mouvement de plus 2 secondes
+                        }
+
+                    }
+                });
+            }
+        };
+        verif3SecondesAnnule.start();
+    }
+
+    /**
+     * Compteur : absence de mouvement
+     */
+    public void compteurMouvement() {
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+
+        int baseTemps = 50;
+
+        timerAnnule = new CountDownTimer((baseTemps - 1) * 1000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                System.out.println("Compteur Annulation (" + millisUntilFinished / 1000 + ")");
+                //      vibrator.vibrate(200);
+            }
+
+            @Override
+            public void onFinish() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        compteurMouvement();
+                    }
+                });
+            }
+        };
+        timerAnnule.start();
+    }
+
+    // Envoi un signal
+    private void annulationPrealarme() {
+        try {
+            timerAnnule.cancel();
+            timerAnnule = null;
+        } catch (Exception ignored) {
+
+        }
+
+        System.out.println("ANNULATION DE LA PREALARME EN COURS");
+
+        Intent intent = new Intent("prealarme_annulation_par_mouvement");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                stopForeground(true);
+            } else {
+                stopSelf();
+            }
+
+
+        } catch (Exception ignored) {
+
+        }
+
+
+    }
+}

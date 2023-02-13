@@ -1,0 +1,160 @@
+package com.ateliopti.lapplicationpti.service;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.PowerManager;
+
+import com.ateliopti.lapplicationpti.MainActivity;
+import com.ateliopti.lapplicationpti.R;
+
+import java.sql.Timestamp;
+
+public class PingSonoreService extends Service {
+
+    Context context;
+    private CountDownTimer timerPing;
+
+    PowerManager.WakeLock wakeLock;
+
+    NotificationManager notificationManager;
+    NotificationChannel channel;
+
+    int temps = 300;
+
+
+    public PingSonoreService() {
+    }
+
+    public void onCreate() {
+        super.onCreate();
+
+
+        final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+
+        launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, launchNotificationIntent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+        channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name),
+                    NotificationManager.IMPORTANCE_MIN);
+
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_id))
+                    .setOngoing(true) // impossible d'enlever
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(getString(R.string.notification_titre))
+                    .setContentText(getString(R.string.notification_texte))
+                    .setSmallIcon(R.drawable.pti_notification)
+                    .build();
+
+
+            startForeground(1, notification);
+
+
+            System.out.println("@atelio " + " ONCREATE PingSonoreService");
+
+        }
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("@atelio ping sonore : destroy");
+
+
+        try {
+            if (timerPing != null) {
+                System.out.println("@atelio ping sonore : end timer");
+
+
+                timerPing.cancel();
+
+                timerPing = null;
+            }
+        } catch (Exception ignored) {
+
+        }
+
+
+        System.out.println("@atelio ping sonore : kill service");
+
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        } else {
+            stopSelf();
+        }
+    }
+
+    @SuppressLint("WakelockTimeout")
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        context = getBaseContext();
+
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+
+        if (timerPing == null) {
+            compteurHommeMort();
+        }
+
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    // Compteur
+    @SuppressLint("WakelockTimeout")
+    public void compteurHommeMort() {
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+
+        final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        timerPing = new CountDownTimer(temps * 1000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                System.out.println("@atelio ping sonore : " + timestamp + " " + millisUntilFinished / 1000);
+            }
+
+            @Override
+            public void onFinish() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> compteurHommeMort());
+            }
+        };
+        timerPing.start();
+    }
+
+}

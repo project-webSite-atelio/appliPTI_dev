@@ -1,0 +1,294 @@
+package com.ateliopti.lapplicationpti.service;
+
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Looper;
+import android.os.PowerManager;
+import android.os.Vibrator;
+
+import android.view.Display;
+import android.view.WindowManager;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.ateliopti.lapplicationpti.MainActivity;
+import com.ateliopti.lapplicationpti.R;
+import com.ateliopti.lapplicationpti.manager.AlarmeAMManager;
+
+
+public class AbsenceMouvementService extends Service implements SensorEventListener {
+
+    private Context context;
+
+    private static CountDownTimer timerMouvement; // Timer
+    private static CountDownTimer verif3Secondes;
+    private int tempsAbsenceMouvement; // XML
+    private boolean absenceMouvement; // XML
+    private boolean verifBouge = false; // Vérification si le téléphone a bougé pendant tant secondes
+    //  BDD bdd;
+
+    Vibrator vibrator;
+    SensorManager sensorManager = null;
+    Sensor accelerometre;
+
+    PowerManager powerManager;
+    PowerManager.WakeLock wakeLock;
+
+    AlarmeAMManager alarmeAMManager;
+
+    // Utilisation de l'accéléromètre
+    private static final double BASE_MOVEMENT_SENSITIVITY = 0.1; //0.1 par défaut
+    private double lastAcceleration = 0;
+    private double movementSensitivity;
+    float x, y, z;
+    Display mDisplay;
+    NotificationManager notificationManager;
+    NotificationChannel channel;
+
+    boolean alarmeDeclenche = false;
+
+
+
+    public void onCreate() {
+        super.onCreate();
+
+        final Intent launchNotificationIntent = new Intent(this, MainActivity.class);
+
+
+        launchNotificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, launchNotificationIntent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+
+        channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name),
+                    NotificationManager.IMPORTANCE_MIN);
+
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = new Notification.Builder(getApplicationContext(), getString(R.string.channel_id))
+                    .setOngoing(true) // impossible d'enlever
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(getString(R.string.notification_titre))
+                    .setContentText(getString(R.string.notification_texte))
+                    .setSmallIcon(R.drawable.pti_notification)
+                    .build();
+
+
+            startForeground(1, notification);
+
+            System.out.println("@atelio " + " ONCREATE AbsenceMouvementService");
+
+
+        }
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mDisplay = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "s:TempWakeLock");
+
+        // bdd = new BDD(getApplicationContext());
+        //bdd.open();
+
+        // Nécessaire pour que le sensor soit utilisé dans le service
+        sensorManager.registerListener(this, accelerometre, SensorManager.SENSOR_DELAY_NORMAL);
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+
+        sensorManager.unregisterListener(this, accelerometre);
+        sensorManager = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        }
+
+        try {
+            timerMouvement.cancel();
+            timerMouvement = null;
+        } catch (Exception ignored) {
+
+        }
+
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+            wakeLock = null;
+        }
+
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+
+    }
+
+    @SuppressLint("WakelockTimeout")
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        context = getApplicationContext();
+
+        int baseMovementSensitivityPercents = 650;         // 100% = BASE_MOVEMENT_SENSITIVITY
+        movementSensitivity = BASE_MOVEMENT_SENSITIVITY * (double) baseMovementSensitivityPercents / 100.0;
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        accelerometre = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mDisplay = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        absenceMouvement = true;
+
+        alarmeAMManager = new AlarmeAMManager(context);
+
+        alarmeAMManager.open();
+        // bdd.open();
+        tempsAbsenceMouvement = alarmeAMManager.getAlarmeAM().getAmDureeDetection();
+
+        if (absenceMouvement) {
+            if (wakeLock != null && !wakeLock.isHeld()) {
+                wakeLock.acquire();
+            }
+            compteurMouvement();
+        } else {
+            System.out.println(absenceMouvement + " fonction désactivée");
+        }
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Rien à faire
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+
+
+
+
+
+        if (timerMouvement != null && absenceMouvement) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                x = event.values[0]; // Azimut
+                y = event.values[1]; // Pitch
+                z = event.values[2]; // Roll
+                double acceleration = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+                double change = Math.abs(acceleration - lastAcceleration);
+
+                // S'il n'y a plus de mouvements, on démarre le timer
+                if (change > movementSensitivity) {
+
+                    verif3Secondes();
+                    verifBouge = true;
+                    lastAcceleration = acceleration;
+                } else {
+                    if (verif3Secondes != null) {
+                        verif3Secondes.cancel();
+                    }
+                    verifBouge = false;
+                }
+            }
+
+        }
+    }
+
+    public void verif3Secondes() {
+        verif3Secondes = new CountDownTimer(2000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (verifBouge && timerMouvement != null) {
+                            timerMouvement.cancel();
+                            timerMouvement.start();
+                        }
+                        //  Mouvement de plus 2 secondes
+                    }
+                });
+            }
+        };
+        verif3Secondes.start();
+    }
+
+    /**
+     * Compteur : absence de mouvement
+     */
+    @SuppressLint("WakelockTimeout")
+    public void compteurMouvement() {
+        if (wakeLock != null && !wakeLock.isHeld()) {
+            wakeLock.acquire();
+        }
+
+        timerMouvement = new CountDownTimer(tempsAbsenceMouvement * 1000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                System.out.println("Compteur Absence de mouvement (" + millisUntilFinished / 1000 + ")");
+                //      vibrator.vibrate(200);
+            }
+
+            @Override
+            public void onFinish() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> sendMessageMouvement());
+            }
+        };
+        timerMouvement.start();
+    }
+
+    // Envoi un signal
+    private void sendMessageMouvement() {
+
+        if (!alarmeDeclenche) {
+            alarmeDeclenche = true;
+            Intent intent = new Intent("alarme_absence_mouvement");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            stopForeground(true);
+        } else {
+            stopSelf();
+        }
+    }
+
+
+
+}
