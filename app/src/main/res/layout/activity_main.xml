@@ -84,19 +84,25 @@
 
                     </LinearLayout>
 
-                    <androidx.appcompat.widget.SwitchCompat
+                    <ToggleButton
                         android:id="@+id/ptiSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false"
+                        android:layout_width="150dp"
+                        android:layout_height="36dp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="35dp"
-                        android:text="PTI"
-                        android:textSize="12sp"
+                        android:layout_marginTop="65dp"
+                        android:background="@drawable/roundbutton"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:paddingLeft="22dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="22dp"
+                        android:paddingBottom="1dp"
+                        android:text="V39 PTI"
+                        android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/couleurNoir"
-                        android:theme="@style/SwitchThemeOverlay"
-                        />
+                        android:textColor="@color/couleurRouge"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>
@@ -227,67 +233,6 @@
 
         </ScrollView>
 
-
-        <LinearLayout
-
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:gravity="bottom"
-
-
-            tools:ignore="MissingConstraints">
-
-            <com.sa90.materialarcmenu.ArcMenu
-
-                android:id="@+id/arcmenu_android_example_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                app:menu_color="@color/colorAccent"
-                app:menu_open="arc_right"
-                app:menu_scr="@drawable/help">
-
-                <TextView
-                    android:id="@+id/fds"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="bold"
-                    android:textColor="#FFF"
-                    />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_arc_menu_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/nouveau"
-                    android:layout_margin="0dp"
-                    android:padding="0dp"
-                    android:contentDescription="nouveautés"
-                    app:backgroundTint="@color/colorAccent" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_arc_menu_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tuto"
-                    app:backgroundTint="@color/colorAccent" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fab_arc_menu_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/assistance"
-                    app:backgroundTint="@color/colorAccent" />
-
-
-            </com.sa90.materialarcmenu.ArcMenu>
-
-
-
-        </LinearLayout>
-
         <LinearLayout
 
             android:layout_width="fill_parent"
@@ -336,38 +281,55 @@
 
         tools:ignore="MissingConstraints">
 
+        <com.sa90.materialarcmenu.ArcMenu
 
+            android:id="@+id/arcmenu_android_example_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu_color="@color/colorAccent"
+            app:menu_open="arc_right"
+            app:menu_scr="@drawable/help">
+
+            <TextView
+                android:id="@+id/fds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="bold"
+                android:textColor="#FFF"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_arc_menu_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/nouveau"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                android:contentDescription="nouveautés"
+                app:backgroundTint="@color/colorAccent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_arc_menu_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tuto"
+                app:backgroundTint="@color/colorAccent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_arc_menu_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/assistance"
+                app:backgroundTint="@color/colorAccent" />
+
+
+        </com.sa90.materialarcmenu.ArcMenu>
 
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        tools:ignore="MissingConstraints">
-
-        <Button
-            android:id="@+id/eteindre"
-            android:layout_width="150dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="85dp"
-            android:background="@drawable/roundbutton"
-            android:drawableLeft="@drawable/ic_power2"
-            android:paddingLeft="22dp"
-            android:paddingTop="1dp"
-            android:paddingRight="22dp"
-            android:paddingBottom="1dp"
-            android:text="V39 PTI"
-            android:textAlignment="center"
-            android:textColor="@color/couleurVert"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <LinearLayout
 
@@ -383,43 +345,34 @@
             android:id="@+id/blocTutoriel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="55dp"
+            android:layout_marginBottom="95dp"
             android:textStyle="bold"
             android:text="Appuyez pour activer"
             android:textAlignment="center"
             android:textColor="@color/couleurNoir"
             android:textSize="20dp"/>
 
-        <Button
-            android:id="@+id/allumer"
-            android:layout_width="150dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="55dp"
-            android:background="@drawable/roundbutton"
-            android:drawableLeft="@drawable/ic_power"
-            android:gravity="center"
-            android:paddingLeft="22dp"
-            android:paddingTop="1dp"
-            android:paddingRight="22dp"
-            android:paddingBottom="1dp"
-            android:text="V39 PTI"
-            android:textAlignment="center"
-            android:textColor="@color/couleurRouge"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
         <TextView
             android:id="@+id/blocTutoriel2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="185dp"
+            android:layout_marginBottom="45dp"
             android:textStyle="bold"
             android:text="Ceci activera/désactivera la \n surveillance PTI"
             android:textAlignment="center"
             android:textColor="@color/couleurNoir"
             android:textSize="20dp"/>
+
+        <ImageView
+            android:id="@+id/logo2"
+            android:layout_width="245dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="175dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_dark"
+
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>
 

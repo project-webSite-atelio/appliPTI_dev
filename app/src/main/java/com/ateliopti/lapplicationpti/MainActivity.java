@@ -46,7 +46,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -163,11 +166,9 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
     DebugFonctions debugFonctions;
 
     AsyncConfiguration asyncConfiguration;
-    SwitchCompat ptiSwitch;
-    Button allumer;
-    Button eteindre;
+    ToggleButton ptiSwitch;
     ImageView logo;
-
+    ImageView logo2;
 
     TextView devPar;
     ImageView logoMini;
@@ -325,18 +326,18 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         declarer = findViewById(R.id.fab_arc_menu_3);
         tuto = findViewById(R.id.fab_arc_menu_2);
         ptiSwitch = findViewById(R.id.ptiSwitch); // Interrupteur
-        allumer = findViewById(R.id.allumer); // Interrupteur
-        eteindre = findViewById(R.id.eteindre); // Interrupteur
         etatVersion = findViewById(R.id.etatVersion);
         devPar = findViewById(R.id.devPar);
         logoMini = findViewById(R.id.logoMini);
+        logo2 = findViewById(R.id.logo2);
 
 
         String numVersion = getResources().getString(R.string.app_version);
         String nomInterrupteur = "v" + numVersion + " " + "PTI";
 
         ptiSwitch.setText(nomInterrupteur);
-        allumer.setText(nomInterrupteur);
+        @SuppressLint("ResourceType") int couleurR = getResources().getInteger(R.color.couleurRouge2);
+        ptiSwitch.setTextColor(couleurR);
 
         // Masquage
         etatVersion.setVisibility(View.INVISIBLE);
@@ -560,7 +561,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
         logo.setVisibility(View.GONE);
         buttonSOS.setVisibility(View.GONE);
-        eteindre.setVisibility(View.GONE);
 
         devPar.setVisibility(View.GONE);
         logoMini.setVisibility(View.GONE);
@@ -962,7 +962,9 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                         // Si l'interrupteur est vert
                         if (isChecked) {
 
-
+                            ptiSwitch.setTextOn(nomInterrupteur);
+                            @SuppressLint("ResourceType") int couleurV = getResources().getInteger(R.color.couleurVert);
+                            ptiSwitch.setTextColor(couleurV);
                             // TODO : disconnect same
                             fonctions.viderTempLocalisation();
 
@@ -990,6 +992,9 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                             arcMenuAndroid.setVisibility(View.VISIBLE);
                             devPar.setVisibility(View.GONE);
                             logoMini.setVisibility(View.GONE);
+
+                            ptiSwitch.setTextOn(nomInterrupteur);
+                            ptiSwitch.setTextColor(couleurR);
 
                             if (ptiEtat) {
                                 messageTLG("PTI Désactivation");
@@ -2113,7 +2118,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             ptiEtat = false;
             blocTutoriel.setVisibility(View.VISIBLE);
             blocTutoriel2.setVisibility(View.VISIBLE);
-            allumer.setVisibility(View.VISIBLE);
+            logo2.setVisibility(View.VISIBLE);
 
             //     ptiSwitchSetClickable(true);
 
@@ -2131,7 +2136,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
             logo.setVisibility(View.GONE);
             buttonSOS.setVisibility(View.GONE);
-            eteindre.setVisibility(View.GONE);
 
             declarer.setVisibility(View.VISIBLE);
             tuto.setVisibility(View.VISIBLE);
@@ -2468,7 +2472,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             ptiEtat = true;
             blocTutoriel.setVisibility(View.GONE);
             blocTutoriel2.setVisibility(View.GONE);
-            allumer.setVisibility(View.GONE);
+            logo2.setVisibility(View.GONE);
             arcMenuAndroid.setVisibility(View.GONE);
 
             devPar.setVisibility(View.VISIBLE);
@@ -2698,7 +2702,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             indication.setVisibility(View.VISIBLE);
             logo.setVisibility(View.VISIBLE);
             buttonSOS.setVisibility(View.VISIBLE);
-            eteindre.setVisibility(View.VISIBLE);
 
             tempLocalisationManager.open();
             if (tempLocalisationManager.getTempLocalisation().getDate().equals("")) {
