@@ -18,6 +18,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.AudioManager;
@@ -42,6 +43,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
     private static final int TAILLE_ECRAN = 240; // Dimensions de la petite montre
 
-    ArcMenu arcMenuAndroid;
 
     // Gestionnaires de base de données
     public AlarmeAgressionManager alarmeAgressionManager;
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
     TextView indication;
 
     TextView buttonSOS;
+    com.google.android.material.floatingactionbutton.FloatingActionButton fabMenu;
     com.google.android.material.floatingactionbutton.FloatingActionButton tuto;
     com.google.android.material.floatingactionbutton.FloatingActionButton declarer;
     com.google.android.material.floatingactionbutton.FloatingActionButton news;
@@ -323,13 +325,22 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         scrollView = findViewById(R.id.scrollView);
 
         buttonSOS = findViewById(R.id.buttonSOS); // Bouton alarme volontaire
-        declarer = findViewById(R.id.fab_arc_menu_3);
-        tuto = findViewById(R.id.fab_arc_menu_2);
         ptiSwitch = findViewById(R.id.ptiSwitch); // Interrupteur
         etatVersion = findViewById(R.id.etatVersion);
         devPar = findViewById(R.id.devPar);
         logoMini = findViewById(R.id.logoMini);
         logo2 = findViewById(R.id.logo2);
+
+        news = findViewById(R.id.fab3);
+        tuto = findViewById(R.id.fab2);
+        declarer = findViewById(R.id.fab1);
+        fabMenu = findViewById(R.id.fabMenu);
+
+        final LinearLayout newsLayout = (LinearLayout) findViewById(R.id.newsLayout);
+        final LinearLayout tutoLayout = (LinearLayout) findViewById(R.id.tutoLayout);
+        final LinearLayout assistanceLayout = (LinearLayout) findViewById(R.id.assistanceLayout);
+
+
 
 
         String numVersion = getResources().getString(R.string.app_version);
@@ -338,10 +349,16 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         ptiSwitch.setText(nomInterrupteur);
         @SuppressLint("ResourceType") int couleurR = getResources().getInteger(R.color.couleurRouge2);
         ptiSwitch.setTextColor(couleurR);
+        Drawable powerR = getResources().getDrawable(R.drawable.ic_power);
+        ptiSwitch.setButtonDrawable(powerR);
 
         // Masquage
         etatVersion.setVisibility(View.INVISIBLE);
         indication.setVisibility(View.INVISIBLE);
+
+        newsLayout.setVisibility(View.GONE);
+        tutoLayout.setVisibility(View.GONE);
+        assistanceLayout.setVisibility(View.GONE);
 
         logo = findViewById(R.id.logo);  // Logo
 
@@ -493,17 +510,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         }
 
 
-        arcMenuAndroid = (ArcMenu) findViewById(R.id.arcmenu_android_example_layout);
-        arcMenuAndroid.setStateChangeListener(new StateChangeListener() {
-            @Override
-            public void onMenuOpened() {
-                //TODO something when menu is opened
-            }
-            @Override
-            public void onMenuClosed() {
-                //TODO something when menu is closed
-            }
-        });
 
         pingService = new Intent(this, PingService.class);
 
@@ -761,6 +767,23 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
         });
 
+
+
+        fabMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(newsLayout.getVisibility()==View.VISIBLE && tutoLayout.getVisibility()==View.VISIBLE && assistanceLayout.getVisibility()==View.VISIBLE){
+                    newsLayout.setVisibility(View.GONE);
+                    tutoLayout.setVisibility(View.GONE);
+                    assistanceLayout.setVisibility(View.GONE);
+                }else{
+                    newsLayout.setVisibility(View.VISIBLE);
+                    tutoLayout.setVisibility(View.VISIBLE);
+                    assistanceLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         // Bouton déclarer
         declarer.setOnClickListener(view -> {
             licenceManager.open();
@@ -965,6 +988,9 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                             ptiSwitch.setTextOn(nomInterrupteur);
                             @SuppressLint("ResourceType") int couleurV = getResources().getInteger(R.color.couleurVert);
                             ptiSwitch.setTextColor(couleurV);
+                            Drawable powerV = getResources().getDrawable(R.drawable.ic_power2);
+                            ptiSwitch.setButtonDrawable(powerV);
+
                             // TODO : disconnect same
                             fonctions.viderTempLocalisation();
 
@@ -973,7 +999,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
                             devPar.setVisibility(View.VISIBLE);
                             logoMini.setVisibility(View.VISIBLE);
-                            arcMenuAndroid.setVisibility(View.GONE);
 
                             licenceManager.open();
                             if (!licenceManager.exists()) { // Pas de licence, affichage du toast
@@ -989,12 +1014,12 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                             // Désactivation PTI par switch et par l'utilisateur
                         } else {
 
-                            arcMenuAndroid.setVisibility(View.VISIBLE);
                             devPar.setVisibility(View.GONE);
                             logoMini.setVisibility(View.GONE);
 
                             ptiSwitch.setTextOff(nomInterrupteur);
                             ptiSwitch.setTextColor(couleurR);
+                            ptiSwitch.setButtonDrawable(powerR);
 
                             if (ptiEtat) {
                                 messageTLG("PTI Désactivation");
@@ -2473,7 +2498,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             blocTutoriel.setVisibility(View.GONE);
             blocTutoriel2.setVisibility(View.GONE);
             logo2.setVisibility(View.GONE);
-            arcMenuAndroid.setVisibility(View.GONE);
 
             devPar.setVisibility(View.VISIBLE);
             logoMini.setVisibility(View.VISIBLE);

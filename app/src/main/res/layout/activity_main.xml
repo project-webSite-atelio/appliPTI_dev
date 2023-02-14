@@ -86,17 +86,13 @@
 
                     <ToggleButton
                         android:id="@+id/ptiSwitch"
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="65dp"
                         android:background="@drawable/roundbutton"
                         android:checked="false"
                         android:gravity="center"
-                        android:paddingLeft="22dp"
-                        android:paddingTop="1dp"
-                        android:paddingRight="22dp"
-                        android:paddingBottom="1dp"
                         android:text="V39 PTI"
                         android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
@@ -265,71 +261,10 @@
                     android:src="@drawable/logo_dark" />
             </LinearLayout>
 
-
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-
-
-        tools:ignore="MissingConstraints">
-
-        <com.sa90.materialarcmenu.ArcMenu
-
-            android:id="@+id/arcmenu_android_example_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:menu_color="@color/colorAccent"
-            app:menu_open="arc_right"
-            app:menu_scr="@drawable/help">
-
-            <TextView
-                android:id="@+id/fds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="bold"
-                android:textColor="#FFF"
-                />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_arc_menu_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/nouveau"
-                android:layout_margin="0dp"
-                android:padding="0dp"
-                android:contentDescription="nouveautés"
-                app:backgroundTint="@color/colorAccent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_arc_menu_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/tuto"
-                app:backgroundTint="@color/colorAccent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_arc_menu_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/assistance"
-                app:backgroundTint="@color/colorAccent" />
-
-
-        </com.sa90.materialarcmenu.ArcMenu>
-
-
 
     </LinearLayout>
-
 
     <LinearLayout
 
@@ -373,6 +308,123 @@
             android:src="@drawable/logo_dark"
 
             app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_weight="1"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/newsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="6dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="mini"
+                android:src="@drawable/nouveau"
+                app:backgroundTint="@color/couleurBlanc" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="Nouveautées"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tutoLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="6dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="mini"
+                android:src="@drawable/tuto"
+                app:backgroundTint="@color/couleurBlanc" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="Tutoriel"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/assistanceLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="mini"
+                android:src="@drawable/assistance"
+                app:backgroundTint="@color/couleurBlanc" />
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Assistance \n technique"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            app:fabSize="normal"
+            android:src="@drawable/help"
+            app:backgroundTint="@color/couleurBlanc" />
 
     </LinearLayout>
 
