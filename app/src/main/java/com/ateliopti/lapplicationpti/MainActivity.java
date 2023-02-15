@@ -795,13 +795,12 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         });
 
         // Bouton tuto
-        tuto.setOnClickListener(view -> {
-            licenceManager.open();
-            // Si il n'y a pas encore de configuration, l'utilisateur peut déclarer sa licence
-            // Dans l'autre cas, il peut signaler les éventuels bugs
-            TutoPopUp popUpT= new TutoPopUp(MainActivity.this);
-            popUpT.show();
-
+        tuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentionTuto = new Intent(MainActivity.this, Tuto.class);
+                startActivity(intentionTuto);
+            }
         });
 
         localisationText2.setOnClickListener(v -> {
@@ -996,6 +995,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
                             declarer.setVisibility(View.GONE);
                             tuto.setVisibility(View.GONE);
+                            fabMenu.setVisibility(View.GONE);
 
                             devPar.setVisibility(View.VISIBLE);
                             logoMini.setVisibility(View.VISIBLE);
@@ -2144,6 +2144,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             blocTutoriel.setVisibility(View.VISIBLE);
             blocTutoriel2.setVisibility(View.VISIBLE);
             logo2.setVisibility(View.VISIBLE);
+            fabMenu.setVisibility(View.VISIBLE);
 
             //     ptiSwitchSetClickable(true);
 
@@ -2498,6 +2499,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             blocTutoriel.setVisibility(View.GONE);
             blocTutoriel2.setVisibility(View.GONE);
             logo2.setVisibility(View.GONE);
+            fabMenu.setVisibility(View.GONE);
 
             devPar.setVisibility(View.VISIBLE);
             logoMini.setVisibility(View.VISIBLE);

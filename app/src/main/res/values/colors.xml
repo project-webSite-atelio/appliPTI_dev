@@ -9,11 +9,13 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#41193F</color>
+    <color name="colorDarkGrey">#5A5A5A</color>
     <color name="couleurNoir">#000000</color>
     <color name="couleurBlanc">#FFFFFF</color>
     <color name="couleurRouge">#FF0000</color>
     <color name="couleurVert">#00b149</color>
     <color name="couleurRouge2">#CC0000</color>
+
 
     <!-- Thèmes logo -->
     <color name="colorAtelio">#80387D</color>

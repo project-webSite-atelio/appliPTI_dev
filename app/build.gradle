@@ -45,6 +45,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'com.sa90.materialarcmenu:library:1.4'
 
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
 
     def play_services_version = "18.0.0"
     implementation "com.google.android.gms:play-services-maps:17.0.1"

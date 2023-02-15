@@ -33,7 +33,7 @@ public class SignalerBugPopUp extends AppCompatActivity {
     void show() {
 
         Dialog builderSignalerBug = new Dialog(context);
-        builderSignalerBug.setCancelable(false);
+        builderSignalerBug.setCancelable(true);
         builderSignalerBug.setContentView(R.layout.assistance_technique);
         builderSignalerBug.getWindow().setBackgroundDrawableResource(R.drawable.rounded_window);
 

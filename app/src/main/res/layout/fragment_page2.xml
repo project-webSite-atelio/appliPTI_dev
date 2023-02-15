@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Page2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="374dp"
+                    android:layout_height="287dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorAccent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="298dp"
+                        android:layout_height="287dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/tuto2" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/titrePage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:text="Titre2"
+                    android:textStyle="bold"
+                    android:textColor="@color/couleurNoir"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/contenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="lorem ipsum dolor sit amet, consecteur adispicing elit. Proin dignissim porttitor mollis. Suspedis vitae lacus ricus. Nunc cursus id risus ut sololicitudin. Vivamus tempor nibh sit."
+                    android:textColor="@color/colorDarkGrey"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</FrameLayout>
