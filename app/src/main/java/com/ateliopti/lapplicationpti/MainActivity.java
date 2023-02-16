@@ -2158,7 +2158,7 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
             etatVersion.setVisibility(View.INVISIBLE);
 
-            modeScenarioJourNuit.setVisibility(View.GONE);
+            modeScenarioJourNuit.setVisibility(View.INVISIBLE);
 
             logo.setVisibility(View.GONE);
             buttonSOS.setVisibility(View.GONE);
@@ -2716,13 +2716,13 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                         modeScenarioJourNuit.setText(txtNuit);
                     }
                     modeScenarioJourNuit.setVisibility(View.VISIBLE);
+                }else {
+                    modeScenarioJourNuit.setVisibility(View.INVISIBLE);
                 }
-
-
 
             }
 
-
+            //modeScenarioJourNuit.setVisibility(View.VISIBLE);
             localisationText.setVisibility(View.VISIBLE);
             localisationText2.setVisibility(View.VISIBLE);
             indication.setVisibility(View.VISIBLE);
