@@ -571,8 +571,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
         devPar.setVisibility(View.GONE);
         logoMini.setVisibility(View.GONE);
 
-        declarer.setVisibility(View.VISIBLE);
-        tuto.setVisibility(View.VISIBLE);
 
 
         popUp = new PopUp("", "", MainActivity.this);
@@ -993,9 +991,11 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
                             // TODO : disconnect same
                             fonctions.viderTempLocalisation();
 
-                            declarer.setVisibility(View.GONE);
-                            tuto.setVisibility(View.GONE);
                             fabMenu.setVisibility(View.GONE);
+
+                            newsLayout.setVisibility(View.GONE);
+                            tutoLayout.setVisibility(View.GONE);
+                            assistanceLayout.setVisibility(View.GONE);
 
                             devPar.setVisibility(View.VISIBLE);
                             logoMini.setVisibility(View.VISIBLE);
@@ -1941,8 +1941,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
 
             fonctions.viderTempLocalisation();
 
-            declarer.setVisibility(View.GONE);
-            tuto.setVisibility(View.GONE);
 
             asyncConfiguration.run();
 
@@ -2163,8 +2161,6 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             logo.setVisibility(View.GONE);
             buttonSOS.setVisibility(View.GONE);
 
-            declarer.setVisibility(View.VISIBLE);
-            tuto.setVisibility(View.VISIBLE);
 
         } catch (Exception ignored) {
 
