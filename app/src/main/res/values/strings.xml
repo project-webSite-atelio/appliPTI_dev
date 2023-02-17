@@ -47,5 +47,7 @@
     <string name="texte_mode_nuit"> ⚠️ Mode Nuit 🌙</string>
     <string name="texte_mode_jour"> ⚠️ Mode Jour ☀</string>
 
+    <string name="IZSR">En <b>zone sans réseau</b>, utilisez l’alarme « En zone sans réseau » (les autres ne fonctionnent pas car absence de réseau)</string>
+    <string name="alarmeVolontaire">Vous êtes dans une situation de détresse, faites un <b>appui long</b> sur le logo PTI.</string>
 
 </resources>

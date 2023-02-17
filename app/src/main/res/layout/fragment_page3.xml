@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
-                    android:text="Titre3"
+                    android:text="Type d’alarme "
                     android:textStyle="bold"
                     android:textColor="@color/couleurNoir"
                     android:gravity="center"
@@ -57,10 +57,26 @@
                     android:layout_marginTop="22dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginLeft="12dp"
-                    android:text="lorem ipsum dolor sit amet, consecteur adispicing elit. Proin dignissim porttitor mollis. Suspedis vitae lacus ricus. Nunc cursus id risus ut sololicitudin. Vivamus tempor nibh sit."
+                    android:text="- Position allongée : appareil  allongé pendant 120 secondes => alarme \n
+- Position immobile : appareil immobile pendant 120 secondes => alarme \n
+- « Homme Mort » : toutes les 30 minutes => alarme"
                     android:textColor="@color/colorDarkGrey"
                     android:gravity="center"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/contenu2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/IZSR"
+                    android:textColor="@color/couleurRouge2"
+                    android:gravity="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
             </LinearLayout>

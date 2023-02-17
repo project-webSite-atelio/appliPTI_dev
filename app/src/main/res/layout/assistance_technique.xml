@@ -22,12 +22,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="22dp"
-                android:text="Assistance technique"
+                android:text="Déclarer votre licence / Assistance technique"
                 android:textStyle="bold"
                 android:textColor="@color/couleurNoir"
                 android:gravity="center"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv1"

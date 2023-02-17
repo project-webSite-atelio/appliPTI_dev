@@ -1112,6 +1112,15 @@ public class MainActivity extends AppCompatActivity implements GPSInterface {
             desactivationSurveillancePTI();
             ptiSwitchSetClickable(false); // Empecher le réappui car fin de surveillance
 
+            @SuppressLint("ResourceType") int couleurR = getResources().getInteger(R.color.couleurRouge2);
+            Drawable powerR = getResources().getDrawable(R.drawable.ic_power);
+            String numVersion = getResources().getString(R.string.app_version);
+            String nomInterrupteur = "v" + numVersion + " " + "PTI";
+            
+            ptiSwitch.setTextOff(nomInterrupteur);
+            ptiSwitch.setTextColor(couleurR);
+            ptiSwitch.setButtonDrawable(powerR);
+
             stopService(intentIZSR);
 
 

@@ -57,7 +57,7 @@
                     android:layout_marginTop="22dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginLeft="12dp"
-                    android:text="lorem ipsum dolor sit amet, consecteur adispicing elit. Proin dignissim porttitor mollis. Suspedis vitae lacus ricus. Nunc cursus id risus ut sololicitudin. Vivamus tempor nibh sit."
+                    android:text="Directement sur la page d’accueil de l’application. \n Délai moyen d’activation par notre service technique : 24h"
                     android:textColor="@color/colorDarkGrey"
                     android:gravity="center"
                     android:textAlignment="center"

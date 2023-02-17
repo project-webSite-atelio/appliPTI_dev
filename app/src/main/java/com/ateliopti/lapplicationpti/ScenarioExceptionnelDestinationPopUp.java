@@ -71,13 +71,13 @@ public class ScenarioExceptionnelDestinationPopUp {
         final String texte = "<b>Renseigner ci-dessous …</b>";
 
         TextView tv1 = new TextView(context);
-        tv1.setTextColor(Color.RED);
+        tv1.setTextColor(Color.BLACK);
 
         if(((MainActivity) context).getTypeEcran()){ // template ronde
             tv1.setPadding(50, 0, 50, 0);
-            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f);
         }else{
-            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
         }
 
 

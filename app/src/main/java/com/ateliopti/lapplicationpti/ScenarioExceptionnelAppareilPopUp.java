@@ -54,16 +54,16 @@ public class ScenarioExceptionnelAppareilPopUp {
         layout.setPadding(2, 2, 2, 2);
 
         TextView tv1 = new TextView(context);
-        tv1.setTextColor(Color.RED);
+        tv1.setTextColor(Color.BLACK);
 
         tv1.setText(Html.fromHtml("<b>Le contact exceptionnel est équipé d'un …</b>"));
 
         if(((MainActivity) context).getTypeEcran()){// écran rond
             tv1.setPadding(50, 0, 50, 0);
-            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
+            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f);
 
         }else{
-            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+            tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f);
 
         }
 

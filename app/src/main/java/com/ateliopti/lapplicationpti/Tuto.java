@@ -35,6 +35,9 @@ public class Tuto extends AppCompatActivity {
         viewPagerAdapter.add(new Page1());
         viewPagerAdapter.add(new Page2());
         viewPagerAdapter.add(new Page3());
+        viewPagerAdapter.add(new Page4());
+        viewPagerAdapter.add(new Page5());
+        viewPagerAdapter.add(new Page6());
 
         // Set the adapter
         viewPager.setAdapter(viewPagerAdapter);

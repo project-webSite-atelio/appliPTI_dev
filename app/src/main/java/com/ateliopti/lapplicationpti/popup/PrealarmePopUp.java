@@ -236,7 +236,7 @@ public class PrealarmePopUp {
             View dialogView = inflater.inflate(R.layout.alarme_code_pin, null);
             dialogBuilder.setView(dialogView);
 
-            String info = "L'alarme sera communiquée si le compte à rebours arrive à 0" +
+            String info = "L'alarme sera communiquée à la fin du compte à rebours" +
                     " (pour annuler l'alarme, tapez le code PIN PTI puis appuyez sur annuler l'alarme) ";
 
 
@@ -272,7 +272,7 @@ public class PrealarmePopUp {
 
         } else {
 
-            String messageBuilder = "L'alarme sera communiquée si le compte à rebours arrive à 0";// + provenanceAlarme;
+            String messageBuilder = "L'alarme sera communiquée à la fin du compte à rebours";// + provenanceAlarme;
             if (annulationParMouvement) {
                 messageBuilder += " (bouger pour annuler)";
             }
